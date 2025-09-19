@@ -51,6 +51,12 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        telkom: {
+          red: "hsl(0 85% 55%)",
+          gray: "hsl(0 0% 45%)",
+          "red-dark": "hsl(0 75% 45%)",
+          "gray-dark": "hsl(0 0% 25%)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

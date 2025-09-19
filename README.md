@@ -1,105 +1,87 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Forum Alumni SMK Telkom Jakarta
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+Platform forum eksklusif untuk alumni SMK Telkom Jakarta yang dibangun dengan Next.js dan Supabase.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## Fitur Utama
 
-## Features
+- **Sistem Autentikasi Lengkap**: Login, register, dan forgot password menggunakan Supabase Auth
+- **Halaman Terproteksi**: Seluruh konten forum hanya dapat diakses oleh user yang sudah login
+- **Dashboard Alumni**: Halaman welcome dengan statistik dan informasi terkini
+- **Responsive Design**: Tampilan yang optimal di desktop dan mobile
+- **Modern Tech Stack**: Next.js 14, Supabase, Tailwind CSS
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+## Struktur Aplikasi
 
-## Demo
+### Halaman Publik
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+- `/` - Landing page dengan informasi forum dan tombol login
+- `/auth/login` - Halaman login
+- `/auth/register` - Halaman registrasi
+- `/auth/forgot-password` - Halaman reset password
 
-## Deploy to Vercel
+### Halaman Terproteksi
 
-Vercel deployment will guide you through creating a Supabase account and project.
+- `/` - Dashboard utama alumni (memerlukan login)
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+## Sistem Keamanan
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+- Middleware otomatis melindungi halaman `/`
+- User yang belum login akan diarahkan ke halaman login
+- User yang sudah login akan diarahkan ke dashboard saat mengakses landing page
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## Setup Development
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+1. **Clone repository dan install dependencies**
 
-## Clone and run locally
+```bash
+npm install
+```
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+2. **Setup Supabase project**
 
-2. Create a Next.js app using the Supabase Starter template npx command
+   - Buat project baru di [Supabase Dashboard](https://supabase.com/dashboard)
+   - Jalankan SQL snippet "User Management Starter" di SQL Editor
+   - Copy Project URL dan anon key
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+3. **Setup environment variables**
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+```bash
+cp .env.example .env.local
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+Isi file `.env.local`:
 
-3. Use `cd` to change into the app's directory
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-anon-key
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+4. **Jalankan development server**
 
-4. Rename `.env.example` to `.env.local` and update the following:
+```bash
+npm run dev
+```
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+Buka [http://localhost:3000](http://localhost:3000) untuk melihat aplikasi.
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+## Teknologi yang Digunakan
 
-5. You can now run the Next.js local development server:
+- **Framework**: Next.js 14 dengan App Router
+- **Database & Auth**: Supabase
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **TypeScript**: Full type safety
 
-   ```bash
-   npm run dev
-   ```
+## Deployment
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+Aplikasi dapat di-deploy ke Vercel dengan mudah:
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-repo/telkom-alumni-forum)
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+## Kontribusi
 
-## Feedback and issues
+Untuk melaporkan bug atau request fitur, silakan buat issue di repository ini.
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+---
 
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+© 2025 Alumni SMK Telekomunikasi Jakarta
