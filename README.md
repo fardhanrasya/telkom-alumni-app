@@ -6,6 +6,8 @@ Platform forum eksklusif untuk komunitas SMK Telkom Jakarta yang dibangun dengan
 
 - **Sistem Multi-Role**: Mendukung 4 role berbeda (Siswa, Alumni, Guru, Administrator)
 - **Dashboard Admin**: Panel administrasi untuk mengelola pengguna dan sistem
+- **Profile Management**: User dapat melihat dan edit profil, ganti password
+- **Admin User Management**: Admin dapat edit profil user lain dan reset password
 - **Custom Authentication**: Sistem autentikasi sendiri dengan bcrypt password hashing
 - **Session Management**: Cookie-based session management
 - **Halaman Terproteksi**: Konten forum hanya dapat diakses oleh user yang sudah login
@@ -22,9 +24,11 @@ Platform forum eksklusif untuk komunitas SMK Telkom Jakarta yang dibangun dengan
 ### Halaman Terproteksi
 
 - `/` - Dashboard utama (memerlukan login, tampilan berbeda berdasarkan role)
+- `/profile` - Halaman profil user (edit profil, ganti password)
 - `/admin` - Dashboard administrator (khusus admin)
 - `/admin/users` - Kelola pengguna (khusus admin)
 - `/admin/users/create` - Tambah pengguna baru (khusus admin)
+- `/admin/users/[id]/edit` - Edit user dan reset password (khusus admin)
 
 ## Sistem Keamanan & Role
 

@@ -18,7 +18,6 @@ export default async function UsersPage() {
   const { data: users, error } = await supabase
     .from("users")
     .select("*")
-    .eq("is_active", true)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -69,9 +68,11 @@ export default async function UsersPage() {
                   {new Date(user.created_at).toLocaleDateString("id-ID")}
                 </TableCell>
                 <TableCell>
-                  <Button variant="outline" size="sm">
-                    Edit
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/admin/users/${user.id}/edit`}>Edit</Link>
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

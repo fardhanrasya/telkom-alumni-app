@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
         password_hash: passwordHash,
         role,
         full_name: full_name || null,
-        is_active: true,
       })
       .select()
       .single();

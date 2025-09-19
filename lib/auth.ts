@@ -36,7 +36,6 @@ export async function getCurrentUser(): Promise<User | null> {
       email: user.email,
       role: user.role,
       full_name: user.full_name,
-      is_active: user.is_active,
       created_at: user.created_at,
       updated_at: user.updated_at,
     };
@@ -58,7 +57,6 @@ export async function loginUser(
       .from("users")
       .select("*")
       .eq("email", email)
-      .eq("is_active", true)
       .single();
 
     if (error || !user) {
@@ -98,7 +96,6 @@ export async function loginUser(
         email: user.email,
         role: user.role,
         full_name: user.full_name,
-        is_active: user.is_active,
         created_at: user.created_at,
         updated_at: user.updated_at,
       },

@@ -41,11 +41,16 @@ export function AuthButton() {
           <span className="text-sm">Halo, {user.full_name || user.email}!</span>
           <RoleBadge role={user.role} />
         </div>
-        {user.role === "admin" && (
-          <Button asChild size="sm" variant="outline">
-            <Link href="/admin">Dashboard Admin</Link>
+        <div className="flex items-center gap-2">
+          <Button asChild size="sm" variant="ghost">
+            <Link href="/profile">Profil</Link>
           </Button>
-        )}
+          {user.role === "admin" && (
+            <Button asChild size="sm" variant="outline">
+              <Link href="/admin">Dashboard Admin</Link>
+            </Button>
+          )}
+        </div>
         <LogoutButton />
       </div>
     );

@@ -7,10 +7,7 @@ export default async function AdminDashboard() {
   const supabase = await createClient();
 
   // Get user statistics
-  const { data: users } = await supabase
-    .from("users")
-    .select("role")
-    .eq("is_active", true);
+  const { data: users } = await supabase.from("users").select("role");
 
   const userStats =
     users?.reduce((acc, user) => {
