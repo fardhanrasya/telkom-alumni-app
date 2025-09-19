@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth";
+import { RoleBadge } from "@/components/role-badge";
 import { Users, MessageSquare, Calendar, Trophy } from "lucide-react";
 
 export default async function WelcomePage() {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
+  // Get user - middleware ensures user is authenticated
+  const user = await getCurrentUser();
+  if (!user) {
     redirect("/auth/login");
   }
 
@@ -17,12 +17,18 @@ export default async function WelcomePage() {
         <h1 className="text-3xl font-bold telkom-text-gradient mb-2">
           Selamat Datang di Forum Alumni!
         </h1>
-        <p className="text-muted-foreground text-lg">
-          Halo,{" "}
-          <span className="font-semibold text-primary">
-            {data.claims.email}
+        <div className="flex items-center gap-3 text-lg">
+          <span className="text-muted-foreground">
+            Halo,{" "}
+            <span className="font-semibold text-primary">
+              {user.full_name || user.email}
+            </span>
+            !
           </span>
-          ! Selamat bergabung dengan komunitas alumni SMK Telkom Jakarta.
+          <RoleBadge role={user.role} />
+        </div>
+        <p className="text-muted-foreground">
+          Selamat bergabung dengan komunitas SMK Telkom Jakarta.
         </p>
       </div>
 

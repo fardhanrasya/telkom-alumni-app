@@ -2,55 +2,59 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { createClient } from "@/lib/supabase/client";
 import { LogoutButton } from "./logout-button";
+import { RoleBadge } from "./role-badge";
 import { useEffect, useState } from "react";
-import type { User } from "@supabase/supabase-js";
+import { User } from "@/lib/types";
 
 export function AuthButton() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
-    // Get initial user
+    // Get current user from server
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
+      try {
+        const response = await fetch("/api/auth/me");
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Error getting user:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getUser();
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, []);
 
   if (loading) {
     return <div className="w-24 h-8 bg-muted animate-pulse rounded"></div>;
   }
 
-  return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <LogoutButton />
-    </div>
-  ) : (
+  if (user) {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm">Halo, {user.full_name || user.email}!</span>
+          <RoleBadge role={user.role} />
+        </div>
+        {user.role === "admin" && (
+          <Button asChild size="sm" variant="outline">
+            <Link href="/admin">Dashboard Admin</Link>
+          </Button>
+        )}
+        <LogoutButton />
+      </div>
+    );
+  }
+
+  return (
     <div className="flex gap-2">
       <Button asChild size="sm" variant={"outline"}>
-        <Link href="/auth/login">Sign in</Link>
-      </Button>
-      <Button asChild size="sm" variant={"default"}>
-        <Link href="/auth/sign-up">Sign up</Link>
+        <Link href="/auth/login">Masuk</Link>
       </Button>
     </div>
   );

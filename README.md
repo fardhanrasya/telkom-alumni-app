@@ -1,33 +1,39 @@
 # Forum Alumni SMK Telkom Jakarta
 
-Platform forum eksklusif untuk alumni SMK Telkom Jakarta yang dibangun dengan Next.js dan Supabase.
+Platform forum eksklusif untuk komunitas SMK Telkom Jakarta yang dibangun dengan Next.js dan Supabase.
 
 ## Fitur Utama
 
-- **Sistem Autentikasi Lengkap**: Login, register, dan forgot password menggunakan Supabase Auth
-- **Halaman Terproteksi**: Seluruh konten forum hanya dapat diakses oleh user yang sudah login
-- **Dashboard Alumni**: Halaman welcome dengan statistik dan informasi terkini
+- **Sistem Multi-Role**: Mendukung 4 role berbeda (Siswa, Alumni, Guru, Administrator)
+- **Dashboard Admin**: Panel administrasi untuk mengelola pengguna dan sistem
+- **Custom Authentication**: Sistem autentikasi sendiri dengan bcrypt password hashing
+- **Session Management**: Cookie-based session management
+- **Halaman Terproteksi**: Konten forum hanya dapat diakses oleh user yang sudah login
+- **Dashboard Role-based**: Tampilan yang disesuaikan berdasarkan role pengguna
 - **Responsive Design**: Tampilan yang optimal di desktop dan mobile
-- **Modern Tech Stack**: Next.js 14, Supabase, Tailwind CSS
+- **Modern Tech Stack**: Next.js 14, Supabase (database only), Tailwind CSS
 
 ## Struktur Aplikasi
 
 ### Halaman Publik
 
-- `/` - Landing page dengan informasi forum dan tombol login
 - `/auth/login` - Halaman login
-- `/auth/register` - Halaman registrasi
-- `/auth/forgot-password` - Halaman reset password
 
 ### Halaman Terproteksi
 
-- `/` - Dashboard utama alumni (memerlukan login)
+- `/` - Dashboard utama (memerlukan login, tampilan berbeda berdasarkan role)
+- `/admin` - Dashboard administrator (khusus admin)
+- `/admin/users` - Kelola pengguna (khusus admin)
+- `/admin/users/create` - Tambah pengguna baru (khusus admin)
 
-## Sistem Keamanan
+## Sistem Keamanan & Role
 
-- Middleware otomatis melindungi halaman `/`
-- User yang belum login akan diarahkan ke halaman login
-- User yang sudah login akan diarahkan ke dashboard saat mengakses landing page
+- **Multi-Role System**: 4 level akses (Siswa, Alumni, Guru, Admin)
+- **Custom Authentication**: Sistem auth sendiri dengan bcrypt password hashing
+- **Session-based Security**: Cookie-based session management
+- **Middleware Protection**: Otomatis melindungi halaman berdasarkan role
+- **Admin-Only Features**: Dashboard admin hanya dapat diakses oleh administrator
+- **Controlled Registration**: Hanya admin yang dapat membuat akun baru
 
 ## Setup Development
 
@@ -40,8 +46,9 @@ npm install
 2. **Setup Supabase project**
 
    - Buat project baru di [Supabase Dashboard](https://supabase.com/dashboard)
-   - Jalankan SQL snippet "User Management Starter" di SQL Editor
+   - Jalankan SQL dari file `db-migration/custom-auth-schema.sql` di SQL Editor
    - Copy Project URL dan anon key
+   - Jalankan SQL dari file `db-migration/create-admin-with-hash.sql` untuk membuat admin pertama
 
 3. **Setup environment variables**
 
@@ -85,3 +92,36 @@ Untuk melaporkan bug atau request fitur, silakan buat issue di repository ini.
 ---
 
 © 2025 Alumni SMK Telekomunikasi Jakarta
+
+## Sistem Role & Permissions
+
+### Role Hierarchy
+
+1. **Siswa** - Akses dasar ke forum
+2. **Alumni** - Akses penuh ke forum alumni
+3. **Guru** - Akses moderasi dan konten edukatif
+4. **Admin** - Akses penuh sistem termasuk manajemen pengguna
+
+### Admin Features
+
+- Dashboard statistik pengguna
+- Membuat akun baru untuk semua role
+- Mengelola data pengguna
+- Generate password otomatis
+- Monitoring aktivitas sistem
+
+### Setup Admin Pertama
+
+Setelah menjalankan migration SQL:
+
+1. Buat user di Supabase Auth Dashboard
+2. Insert ke tabel user_profiles:
+
+```sql
+INSERT INTO user_profiles (id, email, role, full_name)
+VALUES ('user-uuid-from-auth', 'admin@example.com', 'admin', 'Administrator');
+```
+
+## API Endpoints
+
+- `POST /api/admin/create-user` - Membuat pengguna baru (admin only)
